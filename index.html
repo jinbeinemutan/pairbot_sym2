@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Pairbot Simulator</title>
+    <link rel="stylesheet" href="style.css" type="text/css" />
+  </head>
+
+  <body>
+    <h1>Pairbot Simulator (β版)</h1>
+    <br /><br />
+    <canvas id="gridCanvas" width="1500" height="600"></canvas>
+    <br />
+    <form id="round">
+      <input type="submit" value="1cycle" />
+    </form>
+    <!-- <form id="undo">
+      <input type="submit" value="undo" />
+    </form> -->
+
+    <form id="auto">
+      <input id="AAA" type="submit" value="AutoMode start" />
+    </form>
+    <label
+      ><input
+        type="range"
+        id="speed"
+        min="400"
+        max="1000"
+        value="800"
+      />speed</label
+    >
+    <br />
+    <form id="all_delete">
+      <input type="submit" value="delete all" />
+    </form>
+    <br />
+
+    <select id="myAlgo">
+      <option value="makeLine_x">直線形成 X軸合意</option>
+      <option value="LEP_x_polygon">LEP X軸合意 凸多角形空洞あり</option>
+      <!-- <option value="LEP_polygon">LEP(凸多角形)</option> -->
+      <option value="OSKB">三角形形成</option>
+      <option value="LEP_2hop">視野2のLEP</option>
+      <option value="LEP_x">LEP X軸合意</option>
+      <option value="makeLine">直線形成</option>
+      <option value="maketriangle">直線から三角形</option>
+    </select>
+
+    <select id="SYNC">
+      <option value="FSYNC">FSYNC</option>
+      <option value="SSYNC">SSYNC</option>
+      <option value="ASYNC">ASYNC</option>
+    </select>
+
+    <select id="DuplicationDetection">
+      <option value="strongDD">弱重複検知</option>
+      <option value="weekDD">強重複検知</option>
+    </select>
+    <br />
+    <br />
+
+    <form id="cheet">
+      <input id="cheetbotan" type="submit" value="displayID ON" />
+    </form>
+    <form id="leaderColoring">
+      <input id="leaderColoringbotan" type="submit" value="LeaderColoring ON" />
+    </form>
+
+    <select id="PairbotColor">
+      <option value="all">rainbow</option>
+      <option value="white">white</option>
+      <option value="red">red</option>
+      <option value="blue">blue</option>
+      <option value="green">green</option>
+      <option value="yellow">yellow</option>
+      <option value="purple">purple</option>
+      <option value="cyan">cyan</option>
+      <option value="grey">grey</option>
+    </select>
+    <br />
+    <form id="freeMode">
+      <input id="freeModeBotan" type="submit" value="freeMode ON" />
+    </form>
+    <select id="PairbotConfig">
+      <option value="0">short</option>
+      <option value="1">1</option>
+      <option value="3">3</option>
+      <option value="5">5</option>
+      <option value="7">7</option>
+      <option value="9">9</option>
+      <option value="11">11</option>
+    </select>
+
+    <script src="Rule.js"></script>
+    <script src="Robot.js"></script>
+    <script src="Pairbot.js"></script>
+    <script src="canvas.js"></script>
+    <script src="main.js"></script>
+
+    <center>
+      <img src="LEP_rules.png" />
+    </center>
+  </body>
+</html>

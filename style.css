@@ -1,0 +1,12 @@
+canvas {
+  position: relative;
+  border: 2px solid #000000;
+}
+
+form {
+  display: inline;
+}
+
+#PairbotConfig{
+  display: none;
+}

@@ -1,12 +1,12 @@
 class Algorithm {
-  constructor(name, sync, dd, isChirality, view, axisAgreement, rule) {
+  constructor(name) {
     this.name = name; //string
-    this.sync = sync; //string
-    this.duplicationDetection = dd; //string "week" or "strong"
-    this.isChirality = isChirality; //bool
-    this.view = view; //int
-    this.axisAgreement = axisAgreement; //int
-    this.rule = rule; // List[][]
+    this.sync; //string
+    this.duplicationDetectio; //string "week" or "strong"
+    this.isChirality; //bool
+    this.view; //int
+    this.axisAgreement; //int
+    this.rule; // List[][]
   }
 
   getName() {
@@ -44,5 +44,11 @@ class Algorithm {
   }
   setAxiAgreement(x) {
     this.axisAgreement = x;
+  }
+  getRule() {
+    return this.rule;
+  }
+  setRule(rule) {
+    this.rule = rule;
   }
 }

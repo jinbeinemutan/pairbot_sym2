@@ -35,7 +35,7 @@ canvas.addEventListener("click", function (event) {
   if (c.getRTB(xw, yh).length == 1) {
     if (!keypress) {
       pairArray.push(
-        new Pairbot(pairArray.length + 1, xw, yh, globalColor, longdirct, 0)
+        new Pairbot(pairArray.length + 1, xw, yh, globalColor, longdirct, pairArray.length)
       );
     } else {
       c.setRTB(xw, yh, -1);

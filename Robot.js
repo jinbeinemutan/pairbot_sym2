@@ -4,8 +4,13 @@ class Robot {
     this.x = x;
     this.y = y;
     this.lookCoord = new Array(7);
-    this.lookLight = new Array(7);
+    for (let i = 0; i < 7; i++) {
+      this.lookCoord[i] = [];
+    }
+    //[ロボの数(+Obj)，lightの色…]
     this.nextgo = [0, 0];
+    this.light;
+    this.nextLight;
     this.whereIsPair = 0;
     c.setRTB(x, y, id);
   }
@@ -20,22 +25,6 @@ class Robot {
       c.getRTB(this.x, this.y - 1),
       c.getRTB(this.x + 1, this.y - 1),
     ];
-    for (let i = 0; i < surround.length; i++) {
-      if (surround[i].length > 1 && surround[i][1] == -1) {
-        this.lookCoord[i] = "O";
-      } else {
-        this.lookCoord[i] = surround[i].length - 1;
-      }
-    }
-
-    if (nowAlgo.getIsLight()) {
-      //lightに関する情報を取得
-      for (let i = 0; i < this.lookCoord.length; i++) {
-        if (this.lookCoord[i] > 0) {
-          this.lookLight[i] = surround[i].slice(1);
-        }
-      }
-    }
 
     //相方の場所を探す
     this.whereIsPair = 0;
@@ -47,10 +36,28 @@ class Robot {
         }
       }
     }
+
+    for (let i = 0; i < surround.length; i++) {
+      if (surround[i].length > 1 && surround[i][1] == -1) {
+        this.lookCoord[i].push(-1);
+      } else {
+        this.lookCoord[i].push(surround[i].length - 1);
+      }
+    }
+    // light
+    for (let i = 0; i < surround.length; i++) {
+      if (this.lookCoord[i][0] > 0) {
+        for (let j = 0; j < surround[i].length - 1; j++) {
+          this.lookCoord[i].push(id2light(surround[i][j + 1]));
+        }
+      }
+    }
+    this.light = id2light(this.id);
   }
 
   computePhase() {
     this.nextgo = [0, 0];
+    this.nextLight = this.light; 
     let tmp = [];
     tmp.push(this.whereIsPair);
     tmp = tmp.concat(this.lookCoord);
@@ -73,24 +80,12 @@ class Robot {
     this.y += this.nextgo[1];
     return true;
   }
-
-  compareLight(lightRule) {
-    for (let i = 0; i < this.lookLight.length; i++) {
-      if (this.lookCoord[i] > 0 && this.lookCoord[i] === "") {
-        if (!(this.lookLight[i].toString() === lightRule[i].toString())) {
-          return false;
-        }
-      }
-    }
-    return true;
-  }
 }
 function compare(tmp, rule) {
   for (let i = 0; i < tmp.length; i++) {
     if (
       tmp[i] != Math.ceil(rule[i]) &&
       tmp[i] != Math.floor(rule[i]) &&
-      tmp[i] != rule[i] &&
       rule[i] != "A"
     ) {
       return false;
@@ -122,4 +117,8 @@ function xy2dct(a, b) {
   if (a == -1 && b == 0) return 4;
   if (a == 0 && b == -1) return 5;
   if (a == 1 && b == -1) return 6;
+}
+
+function id2light(id) {
+  return pairArray[id - 1].light;
 }

@@ -242,6 +242,7 @@ function num2color(n) {
 }
 
 function hexagon(posx, posy, length) {
+  ctx.fillStyle = "black";
   ctx.beginPath();
   ctx.moveTo(posx, posy);
   ctx.lineTo(posx + length, posy);

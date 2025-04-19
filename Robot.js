@@ -4,6 +4,7 @@ class Robot {
     this.x = x;
     this.y = y;
     this.lookCoord = new Array(7);
+    this.lookLight = new Array(7);
     this.nextgo = [0, 0];
     this.whereIsPair = 0;
     c.setRTB(x, y, id);
@@ -20,9 +21,23 @@ class Robot {
       c.getRTB(this.x + 1, this.y - 1),
     ];
     for (let i = 0; i < surround.length; i++) {
-      this.lookCoord[i] = surround[i].length - 1;
+      if (surround[i].length > 1 && surround[i][1] == -1) {
+        this.lookCoord[i] = "O";
+      } else {
+        this.lookCoord[i] = surround[i].length - 1;
+      }
     }
 
+    if (nowAlgo.getIsLight()) {
+      //lightに関する情報を取得
+      for (let i = 0; i < this.lookCoord.length; i++) {
+        if (this.lookCoord[i] > 0) {
+          this.lookLight[i] = surround[i].slice(1);
+        }
+      }
+    }
+
+    //相方の場所を探す
     this.whereIsPair = 0;
     for (let i = 1; i < surround.length; i++) {
       for (let j = 0; j < surround[i].length; j++) {
@@ -40,7 +55,7 @@ class Robot {
     tmp.push(this.whereIsPair);
     tmp = tmp.concat(this.lookCoord);
 
-   let foo = nowAlgo.getRule();
+    let foo = nowAlgo.getRule();
 
     for (let i = 0; i < foo.length; i++) {
       if (compare(tmp, foo[i])) {
@@ -58,12 +73,24 @@ class Robot {
     this.y += this.nextgo[1];
     return true;
   }
+
+  compareLight(lightRule) {
+    for (let i = 0; i < this.lookLight.length; i++) {
+      if (this.lookCoord[i] > 0 && this.lookCoord[i] === "") {
+        if (!(this.lookLight[i].toString() === lightRule[i].toString())) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
 }
 function compare(tmp, rule) {
   for (let i = 0; i < tmp.length; i++) {
     if (
       tmp[i] != Math.ceil(rule[i]) &&
       tmp[i] != Math.floor(rule[i]) &&
+      tmp[i] != rule[i] &&
       rule[i] != "A"
     ) {
       return false;

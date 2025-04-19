@@ -7,6 +7,7 @@ let pairArray = []; //全てのpairbotを格納してるリスト
 let nowAlgo = new Algorithm("nowAlgo");
 nowAlgo.setSync("F");
 nowAlgo.setRule(R_LEP_x);
+nowAlgo.setIsLight(false);
 
 var intervalId;
 let isCheet = false;
@@ -125,6 +126,10 @@ AlgoSelect.addEventListener("change", function () {
       nowAlgo.setRule(R_makeLine_xy);
       nowAlgo.setSync("F");
       SyncSelect.options[0].selected = true;
+      break;
+    case "lightest":
+      nowAlgo.setRule(testLightRule);
+      nowAlgo.setIsLight(true);
       break;
     default:
       window.alert("error: none of MyAlgo.value is selected");
@@ -289,7 +294,6 @@ function LCM() {
       let r = Math.floor(Math.random() * pairArray.length);
       pairArray[r].ActAsyncPhase();
     }
-    c.drawPairbotLine();
   } else {
     if (nowAlgo.getSync() == "F") {
       for (let i = 0; i < pairArray.length; i++) {
@@ -314,8 +318,8 @@ function LCM() {
         pairArray[i].pairMovePhase();
       }
     }
-    doDrawFuncs();
   }
+  doDrawFuncs();
 }
 
 function IsLeader() {

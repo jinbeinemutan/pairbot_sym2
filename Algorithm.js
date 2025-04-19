@@ -7,6 +7,7 @@ class Algorithm {
     this.view; //int
     this.axisAgreement; //int
     this.rule; // List[][]
+    this.isLight;
   }
 
   getName() {
@@ -50,5 +51,13 @@ class Algorithm {
   }
   setRule(rule) {
     this.rule = rule;
+  }
+
+  setIsLight(bool){
+    this.isLight = bool;
+  }
+
+  getIsLight(){
+    return this.isLight;
   }
 }

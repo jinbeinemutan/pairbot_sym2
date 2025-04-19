@@ -29,7 +29,6 @@ canvas.addEventListener("click", function (event) {
   }
 
   if (event.ctrlKey) {
-
   }
 
   if (c.getRTB(xw, yh).length == 1) {
@@ -71,7 +70,6 @@ document.getElementById("all_delete").onsubmit = function (event) {
     document.getElementById("AAA").value = "AutoMode start";
   }
   pairArray = [];
-  pairArrayHistory = [];
   // RTBArray.length = 1;
   for (let i = 0; i < RTB_w; i++) {
     for (let j = 0; j < RTB_h; j++) {
@@ -219,6 +217,34 @@ ColorSelect.addEventListener("change", function () {
     default:
       window.alert("error: none of color.value is selected");
   }
+});
+
+let memorySelect = document.getElementById("memory");
+memorySelect.options[0].selected = true;
+memorySelect.addEventListener("change", function () {
+  if (intervalId) {
+    clearInterval(intervalId); // タイマーが動いている場合は停止する
+    intervalId = null; // タイマーIDをクリアする
+    document.getElementById("AAA").value = "AutoMode start";
+  }
+  pairArray = [];
+  // RTBArray.length = 1;
+  for (let i = 0; i < RTB_w; i++) {
+    for (let j = 0; j < RTB_h; j++) {
+      c.RTB[i][j].length = 1;
+    }
+  }
+  switch (memorySelect.value) {
+    case "test1":
+      c.RTB_CP(RTB_MEM2);
+      break;
+    case "test2":
+      c.RTB_CP(RTB_MEM);
+      break;
+    default:
+      // window.alert("error: none of memory.value is selected");
+  }
+  doDrawFuncs();
 });
 
 function setGlobalColor() {

@@ -175,8 +175,8 @@ class Canvas {
             // );
 
             hexagon(
-              w / 2 + a * (x * Math.round(Math.sqrt(3)) + y) -a/2,
-              h / 2 - y * a * Math.sqrt(3) -a*Math.sqrt(3)/2,
+              w / 2 + a * (x * Math.round(Math.sqrt(3)) + y) - a / 2,
+              h / 2 - y * a * Math.sqrt(3) - (a * Math.sqrt(3)) / 2,
               a
             );
           }
@@ -204,6 +204,17 @@ class Canvas {
           1
         );
         break;
+      }
+    }
+  }
+
+  RTB_CP(memory) {
+    for (let i = 0; i < RTB_w; i++) {
+      for (let j = 0; j < RTB_h; j++) {
+        this.RTB[i][j].length = memory[i][j].length;
+        for (let k = 0; k < memory[i][j].length; k++) {
+          this.RTB[i][j][k] = memory[i][j][k];
+        }
       }
     }
   }

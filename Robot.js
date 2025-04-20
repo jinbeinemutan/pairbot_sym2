@@ -66,8 +66,30 @@ class Robot {
       tmp[i + 1] = this.lookCoord[i];
     }
 
-    let rule = nowAlgo.getRule();
+    let foo = nowAlgo.getRule();
+    let rule = [];
+    let div = 1;
     let ruleCollisionditect = [];
+
+    if (nowAlgo.getIsChirality()) {
+      div = 6;
+      for (let i = 0; i < foo.length; i++) {
+        let aaa = makeRuleChirality(foo[i]);
+        for (let j = 0; j < 6; j++) {
+          rule.push(aaa[j]);
+        }
+      }
+    } else if (nowAlgo.getAxiAgreement == 1) {
+      div = 2;
+      for (let i = 0; i < foo.length; i++) {
+        let aaa = makeRuleChirality(foo[i]);
+        for (let j = 0; j < 2; j++) {
+          rule.push(aaa[j]);
+        }
+      }
+    } else {
+      rule = foo;
+    }
     for (let i = 0; i < rule.length; i++) {
       if (compare(tmp, rule[i])) {
         if (nowAlgo.getIsLight()) {
@@ -77,11 +99,16 @@ class Robot {
           this.nextgo = dct2xy(rule[i][8]);
         }
 
-        ruleCollisionditect.push(i);
+        ruleCollisionditect.push(parseInt(i / div));
       }
     }
     if (ruleCollisionditect.length > 1) {
-      alert("error:rule collision ditect!" + ruleCollisionditect);
+      alert(
+        "rule collision detect! id = " +
+          this.id +
+          "\n" +
+          ruleCollisionditect.toString()
+      );
     }
   }
 
@@ -112,14 +139,29 @@ function compare(tmp, rule) {
       if (
         tmp[i][0] != Math.ceil(rule[i][0]) &&
         tmp[i][0] != Math.floor(rule[i][0]) &&
-        rule[i][0] != "A"
+        rule[i][0] != "A" &&
+        !(rule[i][0] == "Z" && tmp[i][0] >= 0) &&
+        !(
+          rule[i][0] == "o" &&
+          (tmp[i][0] == -1 ||
+            (tmp[i][0] == 2 && tmp[i][1] == 1 && tmp[i][2] == 1))
+        ) &&
+        !(
+          rule[i][0] == "!o" &&
+          !(
+            tmp[i][0] == -1 ||
+            (tmp[i][0] == 2 && tmp[i][1] == 1 && tmp[i][2] == 1)
+          )
+        )
       ) {
         return false;
       }
       let tmpLight = tmp[i].slice(1);
       let divLight = rule[i].slice(1);
-      if (!(tmpLight.toString() === divLight.toString())) {
-        return false;
+      if (typeof rule[i][0] === "number") {
+        if (!(tmpLight.toString() === divLight.toString())) {
+          return false;
+        }
       }
     }
     return true;

@@ -1,13 +1,11 @@
 class Algorithm {
-  constructor(name) {
-    this.name = name; //string
-    this.sync; //string
-    this.duplicationDetectio; //string "week" or "strong"
-    this.isChirality; //bool
-    this.view; //int
-    this.axisAgreement; //int
-    this.rule; // List[][]
-    this.isLight;
+  constructor(name, sync, isChirality, axisAgreement, rule, isLight) {
+    this.name = name;
+    this.sync = sync; //string
+    this.isChirality = isChirality; //bool
+    this.axisAgreement = axisAgreement; //int
+    this.rule = rule; // List[][]
+    this.isLight = isLight; // bool
   }
 
   getName() {
@@ -22,23 +20,11 @@ class Algorithm {
   setSync(sync) {
     this.sync = sync;
   }
-  getDuplicationDetection() {
-    return this.duplicationDetection;
-  }
-  setDuplicationDetection(dd) {
-    this.duplicationDetection = dd;
-  }
   getIsChirality() {
     return this.isChirality;
   }
   setIsChirality(isChirality) {
     this.isChirality = isChirality;
-  }
-  getView() {
-    return this.view;
-  }
-  setView(view) {
-    this.view = view;
   }
   getAxiAgreement() {
     return this.axisAgreement;
@@ -52,12 +38,17 @@ class Algorithm {
   setRule(rule) {
     this.rule = rule;
   }
-
-  setIsLight(bool){
+  setIsLight(bool) {
     this.isLight = bool;
   }
-
-  getIsLight(){
+  getIsLight() {
     return this.isLight;
+  }
+  setAll(tmp) {
+    this.setSync(tmp.getSync());
+    this.setIsChirality(tmp.getIsChirality());
+    this.setAxiAgreement(tmp.getAxiAgreement());
+    this.setRule(tmp.getRule());
+    this.setIsLight(tmp.getIsLight());
   }
 }

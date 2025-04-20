@@ -4,10 +4,24 @@ const ctx = canvas.getContext("2d");
 let c = new Canvas(); // canvasの初期化&RTB
 let pairArray = []; //全てのpairbotを格納してるリスト
 
-let nowAlgo = new Algorithm("nowAlgo");
-nowAlgo.setSync("F");
-nowAlgo.setRule(testLightRule);
-nowAlgo.setIsLight(true);
+let nowAlgo = new Algorithm("nowAlgo", "F", true, 0, testLightRule, true);
+let AlgoLepX = new Algorithm("AlgoLepX", "S", false, 1, R_LEP_x, false);
+let AlogMakeLine = new Algorithm(
+  "AlogMakeLine",
+  "S",
+  false,
+  2,
+  R_makeLine_xy,
+  false
+);
+let Algofilling = new Algorithm(
+  "Algofilling",
+  "S",
+  true,
+  0,
+  testLightRule,
+  true
+);
 
 var intervalId;
 let isCheet = false;
@@ -129,6 +143,7 @@ AlgoSelect.addEventListener("change", function () {
       nowAlgo.setRule(R_LEP_x);
       nowAlgo.setSync("S");
       nowAlgo.setIsLight(false);
+      nowAlgo.setIsChirality(false);
       SyncSelect.options[1].selected = true;
       break;
     case "line_xy":
@@ -136,10 +151,12 @@ AlgoSelect.addEventListener("change", function () {
       nowAlgo.setSync("F");
       SyncSelect.options[0].selected = true;
       nowAlgo.setIsLight(false);
+      nowAlgo.setIsChirality(false);
       break;
     case "lightest":
       nowAlgo.setRule(testLightRule);
       nowAlgo.setIsLight(true);
+      nowAlgo.setIsChirality(true);
       SyncSelect.options[2].selected = true;
       break;
     default:

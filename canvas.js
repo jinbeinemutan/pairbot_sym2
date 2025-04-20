@@ -139,7 +139,7 @@ class Canvas {
       for (let j = 0; j < this.RTB[i].length; j++) {
         let pile = 0;
         for (let k = 0; k < this.RTB[i][j].length; k++) {
-          if (this.RTB[i][j][k] > 0) {
+          if (this.RTB[i][j][k] > 0) {//robot
             ctx.strokeStyle = num2color(pairArray[this.RTB[i][j][k] - 1].light);
             ctx.fillStyle = pairArray[this.RTB[i][j][k] - 1].color;
             let x = i - Math.floor(RTB_w / 2);
@@ -163,17 +163,10 @@ class Canvas {
               );
             }
             pile++;
-          } else if (this.RTB[i][j][k] < 0) {
-            ctx.fillStyle = "#000000";
+          } else if (this.RTB[i][j][k] < 0) {//Obj
+            ctx.strokeStyle = "black";
             let x = i - Math.floor(RTB_w / 2);
             let y = j - Math.floor(RTB_h / 2);
-            // ctx.fillRect(
-            //   w / 2 + a * (x * Math.round(Math.sqrt(3)) + y) - 20,
-            //   h / 2 - y * a * Math.sqrt(3) - 20,
-            //   40,
-            //   40
-            // );
-
             hexagon(
               w / 2 + a * (x * Math.round(Math.sqrt(3)) + y) - a / 2,
               h / 2 - y * a * Math.sqrt(3) - (a * Math.sqrt(3)) / 2,
@@ -242,7 +235,6 @@ function num2color(n) {
 }
 
 function hexagon(posx, posy, length) {
-  ctx.fillStyle = "black";
   ctx.beginPath();
   ctx.moveTo(posx, posy);
   ctx.lineTo(posx + length, posy);

@@ -6,8 +6,8 @@ let pairArray = []; //全てのpairbotを格納してるリスト
 
 let nowAlgo = new Algorithm("nowAlgo");
 nowAlgo.setSync("F");
-nowAlgo.setRule(R_LEP_x);
-nowAlgo.setIsLight(false);
+nowAlgo.setRule(testLightRule);
+nowAlgo.setIsLight(true);
 
 var intervalId;
 let isCheet = false;
@@ -15,6 +15,7 @@ let globalColor = "#ffffff";
 let longdirct = [0, 0];
 let isleaderColoring = false;
 let keypress = false;
+let globalLight = 0;
 
 c.drawGrid();
 
@@ -35,7 +36,14 @@ canvas.addEventListener("click", function (event) {
   if (c.getRTB(xw, yh).length == 1) {
     if (!keypress) {
       pairArray.push(
-        new Pairbot(pairArray.length + 1, xw, yh, globalColor, longdirct, pairArray.length)
+        new Pairbot(
+          pairArray.length + 1,
+          xw,
+          yh,
+          globalColor,
+          longdirct,
+          globalLight
+        )
       );
     } else {
       c.setRTB(xw, yh, -1);
@@ -114,22 +122,25 @@ SyncSelect.addEventListener("change", function () {
 });
 
 let AlgoSelect = document.getElementById("myAlgo");
-AlgoSelect.options[0].selected = true;
+AlgoSelect.options[2].selected = true;
 AlgoSelect.addEventListener("change", function () {
   switch (AlgoSelect.value) {
     case "LEP_x":
       nowAlgo.setRule(R_LEP_x);
       nowAlgo.setSync("S");
+      nowAlgo.setIsLight(false);
       SyncSelect.options[1].selected = true;
       break;
     case "line_xy":
       nowAlgo.setRule(R_makeLine_xy);
       nowAlgo.setSync("F");
       SyncSelect.options[0].selected = true;
+      nowAlgo.setIsLight(false);
       break;
     case "lightest":
       nowAlgo.setRule(testLightRule);
       nowAlgo.setIsLight(true);
+      SyncSelect.options[2].selected = true;
       break;
     default:
       window.alert("error: none of MyAlgo.value is selected");
@@ -185,6 +196,36 @@ PairbotConfigSelect.addEventListener("change", function () {
       break;
     default:
       window.alert("error: none of PairbotConfig.value is selected");
+  }
+});
+
+let PairbotLightSelect = document.getElementById("PairbotLight");
+PairbotLightSelect.options[0].selected = true;
+PairbotLightSelect.addEventListener("change", function () {
+  switch (PairbotLightSelect.value) {
+    case "0":
+      globalLight = 0;
+      break;
+    case "1":
+      globalLight = 1;
+      break;
+    case "2":
+      globalLight = 2;
+      break;
+    case "3":
+      globalLight = 3;
+      break;
+    case "4":
+      globalLight = 4;
+      break;
+    case "5":
+      globalLight = 5;
+      break;
+    case "6":
+      globalLight = 6;
+      break;
+    default:
+      window.alert("error: none of PairbotLightSelect.value is selected");
   }
 });
 
@@ -247,7 +288,7 @@ memorySelect.addEventListener("change", function () {
       c.RTB_CP(RTB_MEM);
       break;
     default:
-      // window.alert("error: none of memory.value is selected");
+    // window.alert("error: none of memory.value is selected");
   }
   doDrawFuncs();
 });

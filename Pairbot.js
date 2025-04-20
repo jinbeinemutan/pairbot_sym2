@@ -44,6 +44,12 @@ class Pairbot {
     this.isLong = this.robA.x != this.robB.x || this.robA.y != this.robB.y;
   }
 
+  setLight(light){
+    this.robA.setLight(light);
+    this.robB.setLight(light);
+    this.light = light;
+  }
+
   ActAsyncPhase() {
     switch (this.AsyncPhase) {
       case 0:

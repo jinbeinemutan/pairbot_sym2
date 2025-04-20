@@ -3,10 +3,8 @@ class Robot {
     this.id = id;
     this.x = x;
     this.y = y;
-    this.lookCoord = new Array(7);
-    for (let i = 0; i < 7; i++) {
-      this.lookCoord[i] = [];
-    }
+    this.lookCoord;
+
     //[ロボの数(+Obj)，lightの色…]
     this.nextgo = [0, 0];
     this.light;
@@ -16,6 +14,10 @@ class Robot {
   }
 
   lookPhase() {
+    this.lookCoord = new Array(7);
+    for (let i = 0; i < 7; i++) {
+      this.lookCoord[i] = [];
+    }
     let surround = [
       c.getRTB(this.x, this.y),
       c.getRTB(this.x + 1, this.y),
@@ -57,45 +59,88 @@ class Robot {
 
   computePhase() {
     this.nextgo = [0, 0];
-    this.nextLight = this.light; 
-    let tmp = [];
-    tmp.push(this.whereIsPair);
-    tmp = tmp.concat(this.lookCoord);
+    this.nextLight = this.light;
+    let tmp = new Array(8);
+    tmp[0] = [this.whereIsPair, this.light];
+    for (let i = 0; i < tmp.length - 1; i++) {
+      tmp[i + 1] = this.lookCoord[i];
+    }
 
-    let foo = nowAlgo.getRule();
+    let rule = nowAlgo.getRule();
+    let ruleCollisionditect = [];
+    for (let i = 0; i < rule.length; i++) {
+      if (compare(tmp, rule[i])) {
+        if (nowAlgo.getIsLight()) {
+          this.nextgo = dct2xy(rule[i][8][0]);
+          this.nextLight = rule[i][8][1];
+        } else {
+          this.nextgo = dct2xy(rule[i][8]);
+        }
 
-    for (let i = 0; i < foo.length; i++) {
-      if (compare(tmp, foo[i])) {
-        this.nextgo = dct2xy(foo[i][8]);
-        break;
+        ruleCollisionditect.push(i);
       }
+    }
+    if (ruleCollisionditect.length > 1) {
+      alert("error:rule collision ditect!" + ruleCollisionditect);
     }
   }
 
   movePhase() {
-    if (this.nextgo[0] == 0 && this.nextgo[1] == 0) return false;
-    c.RTB_RM(this.x, this.y, this.id);
-    c.setRTB(this.x + this.nextgo[0], this.y + this.nextgo[1], this.id);
-    this.x += this.nextgo[0];
-    this.y += this.nextgo[1];
-    return true;
-  }
-}
-function compare(tmp, rule) {
-  for (let i = 0; i < tmp.length; i++) {
     if (
-      tmp[i] != Math.ceil(rule[i]) &&
-      tmp[i] != Math.floor(rule[i]) &&
-      rule[i] != "A"
+      this.nextgo[0] == 0 &&
+      this.nextgo[1] == 0 &&
+      this.nextLight == this.light
     ) {
-      return false;
+    } else {
+      c.RTB_RM(this.x, this.y, this.id);
+      c.setRTB(this.x + this.nextgo[0], this.y + this.nextgo[1], this.id);
+      this.x += this.nextgo[0];
+      this.y += this.nextgo[1];
+      pairArray[this.id - 1].setLight(this.nextLight);
     }
   }
-  return true;
+
+  setLight(light) {
+    this.light = light;
+    this.nextLight = light;
+  }
+}
+
+function compare(tmp, rule) {
+  if (nowAlgo.getIsLight()) {
+    for (let i = 0; i < tmp.length; i++) {
+      if (
+        tmp[i][0] != Math.ceil(rule[i][0]) &&
+        tmp[i][0] != Math.floor(rule[i][0]) &&
+        rule[i][0] != "A"
+      ) {
+        return false;
+      }
+      let tmpLight = tmp[i].slice(1);
+      let divLight = rule[i].slice(1);
+      if (!(tmpLight.toString() === divLight.toString())) {
+        return false;
+      }
+    }
+    return true;
+  } else {
+    for (let i = 0; i < tmp.length; i++) {
+      if (
+        tmp[i][0] != Math.ceil(rule[i]) &&
+        tmp[i][0] != Math.floor(rule[i]) &&
+        rule[i][0] != "A"
+      ) {
+        return false;
+      }
+    }
+    return true;
+  }
 }
 
 function dct2xy(i) {
   switch (i) {
+    case 0:
+      return [0, 0];
     case 1:
       return [1, 0];
     case 2:

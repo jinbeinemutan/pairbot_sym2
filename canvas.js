@@ -133,13 +133,12 @@ class Canvas {
     }
   }
   drawRobot() {
-    ctx.lineWidth = 5;
-    ctx.strokeStyle = "black";
     for (let i = 0; i < this.RTB.length; i++) {
       for (let j = 0; j < this.RTB[i].length; j++) {
         let pile = 0;
         for (let k = 0; k < this.RTB[i][j].length; k++) {
           if (this.RTB[i][j][k] > 0) {//robot
+            ctx.lineWidth = 6;
             ctx.strokeStyle = num2color(pairArray[this.RTB[i][j][k] - 1].light);
             ctx.fillStyle = pairArray[this.RTB[i][j][k] - 1].color;
             let x = i - Math.floor(RTB_w / 2);
@@ -235,6 +234,7 @@ function num2color(n) {
 }
 
 function hexagon(posx, posy, length) {
+  ctx.lineWidth = 5;
   ctx.beginPath();
   ctx.moveTo(posx, posy);
   ctx.lineTo(posx + length, posy);

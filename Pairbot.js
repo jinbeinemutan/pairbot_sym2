@@ -1,5 +1,5 @@
 class Pairbot {
-  constructor(id, x, y, color, longdirct,light) {
+  constructor(id, x, y, color, longdirct, light) {
     this.robA = new Robot(id, x, y);
     this.robB = new Robot(id, x + longdirct[0], y + longdirct[1]);
     this.isLong;
@@ -7,7 +7,7 @@ class Pairbot {
     this.isActivate = false;
     this.AsyncPhase = 0;
     this.color = color;
-    this.id = id;//warning!: IDは1から始まります
+    this.id = id; //warning!: IDは1から始まります
     this.light = light;
     this.serected = false;
   }
@@ -29,6 +29,12 @@ class Pairbot {
     this.robA.computePhase();
     this.robB.computePhase();
   }
+
+  makeRule(move,light) {
+    this.pairLookPhase();
+    this.robA.ruleMaker(move,light);
+  }
+
   pairMovePhase() {
     if (this.isLong) {
       this.robA.movePhase();
@@ -44,7 +50,7 @@ class Pairbot {
     this.isLong = this.robA.x != this.robB.x || this.robA.y != this.robB.y;
   }
 
-  setLight(light){
+  setLight(light) {
     this.robA.setLight(light);
     this.robB.setLight(light);
     this.light = light;

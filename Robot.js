@@ -63,7 +63,13 @@ class Robot {
     let tmp = new Array(8);
     tmp[0] = [this.whereIsPair, this.light];
     for (let i = 0; i < tmp.length - 1; i++) {
-      tmp[i + 1] = this.lookCoord[i];
+      if (this.lookCoord[i][0] > 2) {
+        //重複検知なし
+        tmp[i + 1] = this.lookCoord[i].slice(0,3);
+        tmp[i + 1][0] = 2;
+      } else {
+        tmp[i + 1] = this.lookCoord[i];
+      }
     }
 
     let foo = nowAlgo.getRule();
@@ -103,21 +109,12 @@ class Robot {
       }
     }
     if (ruleCollisionditect.length > 1) {
-      alert(
-        "rule collision detect! id = " +
-          this.id +
-          "\n" +
-          ruleCollisionditect.toString()
-      );
+      alert("rule collision detect! id = " + this.id + "\n" + ruleCollisionditect.toString());
     }
   }
 
   movePhase() {
-    if (
-      this.nextgo[0] == 0 &&
-      this.nextgo[1] == 0 &&
-      this.nextLight == this.light
-    ) {
+    if (this.nextgo[0] == 0 && this.nextgo[1] == 0 && this.nextLight == this.light) {
     } else {
       c.RTB_RM(this.x, this.y, this.id);
       c.setRTB(this.x + this.nextgo[0], this.y + this.nextgo[1], this.id);
@@ -131,6 +128,17 @@ class Robot {
     this.light = light;
     this.nextLight = light;
   }
+
+  ruleMaker(move, light) {
+    this.nextLight = this.light;
+    let ret = new Array(9);
+    ret[0] = [this.whereIsPair, this.light];
+    for (let i = 0; i < ret.length - 2; i++) {
+      ret[i + 1] = this.lookCoord[i];
+    }
+    ret[8] = [move, light];
+    console.log(ret);
+  }
 }
 
 function compare(tmp, rule) {
@@ -143,23 +151,25 @@ function compare(tmp, rule) {
         !(rule[i][0] == "Z" && tmp[i][0] >= 0) &&
         !(
           rule[i][0] == "o" &&
-          (tmp[i][0] == -1 ||
-            (tmp[i][0] == 2 && tmp[i][1] == 1 && tmp[i][2] == 1))
+          (tmp[i][0] == -1 || (tmp[i][0] == 2 && tmp[i][1] == 1 && tmp[i][2] == 1))
         ) &&
         !(
           rule[i][0] == "!o" &&
-          !(
-            tmp[i][0] == -1 ||
-            (tmp[i][0] == 2 && tmp[i][1] == 1 && tmp[i][2] == 1)
-          )
+          !(tmp[i][0] == -1 || (tmp[i][0] == 2 && tmp[i][1] == 1 && tmp[i][2] == 1))
+        ) &&
+        !(
+          rule[i][0] == "r" && //ライト1はObj扱い
+          (tmp[i][0] == 1 || (tmp[i][0] == 2 && tmp[i][1] != 1 && tmp[i][2] != 1))
+        ) &&
+        !(
+          rule[i][0] == "!r" &&
+          !(tmp[i][0] == 1 || (tmp[i][0] == 2 && tmp[i][1] != 1 && tmp[i][2] != 1))
         )
       ) {
         return false;
       }
-      let tmpLight = tmp[i].slice(1);
-      let divLight = rule[i].slice(1);
-      if (typeof rule[i][0] === "number") {
-        if (!(tmpLight.toString() === divLight.toString())) {
+      if (typeof rule[i][0] === "number" && rule[i].length > 1) {
+        if (!(tmp[i].slice(1).toString() === rule[i].slice(1).toString())) {
           return false;
         }
       }

@@ -6,22 +6,8 @@ let pairArray = []; //全てのpairbotを格納してるリスト
 
 let nowAlgo = new Algorithm("nowAlgo", "F", true, 0, testLightRule, true);
 let AlgoLepX = new Algorithm("AlgoLepX", "S", false, 1, R_LEP_x, false);
-let AlogMakeLine = new Algorithm(
-  "AlogMakeLine",
-  "S",
-  false,
-  2,
-  R_makeLine_xy,
-  false
-);
-let Algofilling = new Algorithm(
-  "Algofilling",
-  "S",
-  true,
-  0,
-  testLightRule,
-  true
-);
+let AlogMakeLine = new Algorithm("AlogMakeLine", "S", false, 2, R_makeLine_xy, false);
+let Algofilling = new Algorithm("Algofilling", "S", true, 0, testLightRule, true);
 
 var intervalId;
 let isCheet = false;
@@ -30,6 +16,7 @@ let longdirct = [0, 0];
 let isleaderColoring = false;
 let keypress = false;
 let globalLight = 0;
+let ispairbotPool = true;
 
 c.drawGrid();
 
@@ -50,14 +37,7 @@ canvas.addEventListener("click", function (event) {
   if (c.getRTB(xw, yh).length == 1) {
     if (!keypress) {
       pairArray.push(
-        new Pairbot(
-          pairArray.length + 1,
-          xw,
-          yh,
-          globalColor,
-          longdirct,
-          globalLight
-        )
+        new Pairbot(pairArray.length + 1, xw, yh, globalColor, longdirct, globalLight)
       );
     } else {
       c.setRTB(xw, yh, -1);
@@ -109,10 +89,7 @@ document.getElementById("auto").onsubmit = function (event) {
     intervalId = null; // タイマーIDをクリアする
     document.getElementById("AAA").value = "AutoMode start";
   } else {
-    intervalId = setInterval(
-      LCM,
-      1000 - document.getElementById("speed").value
-    ); // タイマーが停止している場合は開始する
+    intervalId = setInterval(LCM, 1000 - document.getElementById("speed").value); // タイマーが停止している場合は開始する
     document.getElementById("AAA").value = "AutoMode stop";
   }
 };
@@ -359,8 +336,7 @@ function LCM() {
       }
     } else if (nowAlgo.getSync() == "S") {
       for (let i = 0; i < pairArray.length; i++) {
-        pairArray[i].isActivate = randomBoolean = (() =>
-          Math.random() >= 0.5)();
+        pairArray[i].isActivate = randomBoolean = (() => Math.random() >= 0.5)();
       }
     }
 
@@ -377,6 +353,7 @@ function LCM() {
       }
     }
   }
+  pairbotPool(-12, 0);
   doDrawFuncs();
 }
 
@@ -400,4 +377,11 @@ function IsLeader() {
   }
 }
 
-function deleteSerected(id) {}
+function pairbotPool(x, y) {
+  if (ColorSelect.options[0].selected) {
+    setGlobalColor();
+  }
+  if (c.getRTB(x, y).toString() === [0].toString()) {
+    pairArray.push(new Pairbot(pairArray.length + 1, x, y, globalColor, longdirct, globalLight));
+  }
+}

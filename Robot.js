@@ -65,7 +65,7 @@ class Robot {
     for (let i = 0; i < tmp.length - 1; i++) {
       if (this.lookCoord[i][0] > 2) {
         //重複検知なし
-        tmp[i + 1] = this.lookCoord[i].slice(0,3);
+        tmp[i + 1] = this.lookCoord[i].slice(0, 3);
         tmp[i + 1][0] = 2;
       } else {
         tmp[i + 1] = this.lookCoord[i];
@@ -109,7 +109,19 @@ class Robot {
       }
     }
     if (ruleCollisionditect.length > 1) {
-      alert("rule collision detect! id = " + this.id + "\n" + ruleCollisionditect.toString());
+      if (ruleCollisionditect[0] != ruleCollisionditect[1])
+        alert(
+          "rule collision detect! id = " +
+            this.id +
+            "\n" +
+            ruleCollisionditect[0] +
+            ": " +
+            nowAlgo.getRule()[ruleCollisionditect[0]].toString() +
+            "\n" +
+            ruleCollisionditect[1] +
+            ": " +
+            nowAlgo.getRule()[ruleCollisionditect[1]].toString()
+        );
     }
   }
 

@@ -382,6 +382,6 @@ function pairbotPool(x, y) {
     setGlobalColor();
   }
   if (c.getRTB(x, y).toString() === [0].toString()) {
-    pairArray.push(new Pairbot(pairArray.length + 1, x, y, globalColor, longdirct, globalLight));
+    pairArray.push(new Pairbot(pairArray.length + 1, x, y, globalColor, [0, 0], 0));
   }
 }

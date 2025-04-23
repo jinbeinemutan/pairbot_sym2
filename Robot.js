@@ -176,6 +176,14 @@ function compare(tmp, rule) {
         !(
           rule[i][0] == "!r" &&
           !(tmp[i][0] == 1 || (tmp[i][0] == 2 && tmp[i][1] != 1 && tmp[i][2] != 1))
+        ) &&
+        !(rule[i][0] == "2" && tmp[i][0] == 2 && tmp[i][1] != 1 && tmp[i][2] != 1) &&
+        !(
+          rule[i][0] == "!r-3" &&
+          !(
+            (tmp[i][0] == 1 && tmp[i][1] != 3) ||
+            (tmp[i][0] == 2 && tmp[i][1] != 1 && tmp[i][2] != 1 && tmp[i][1] != 3 && tmp[i][2] != 3)
+          )
         )
       ) {
         return false;

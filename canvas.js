@@ -20,6 +20,23 @@ class Canvas {
       }
     }
   }
+
+  drawPool() {
+    ctx.strokeStyle = "grey"
+    ctx.fillStyle = "grey";
+    ctx.beginPath();
+    ctx.arc(
+      // w / 2 +a * (x * Math.round(Math.sqrt(3)) + y),
+      a,
+      h/2,
+      18,
+      0,
+      Math.PI * 2
+    );
+    ctx.stroke();
+    ctx.fill();
+  }
+
   drawGrid() {
     ctx.clearRect(0, 0, w, h);
 
@@ -137,7 +154,8 @@ class Canvas {
       for (let j = 0; j < this.RTB[i].length; j++) {
         let pile = 0;
         for (let k = 0; k < this.RTB[i][j].length; k++) {
-          if (this.RTB[i][j][k] > 0) {//robot
+          if (this.RTB[i][j][k] > 0) {
+            //robot
             ctx.lineWidth = 6;
             ctx.strokeStyle = num2color(pairArray[this.RTB[i][j][k] - 1].light);
             ctx.fillStyle = pairArray[this.RTB[i][j][k] - 1].color;
@@ -162,7 +180,8 @@ class Canvas {
               );
             }
             pile++;
-          } else if (this.RTB[i][j][k] < 0) {//Obj
+          } else if (this.RTB[i][j][k] < 0) {
+            //Obj
             ctx.strokeStyle = "black";
             let x = i - Math.floor(RTB_w / 2);
             let y = j - Math.floor(RTB_h / 2);

@@ -19,6 +19,7 @@ let globalLight = 0;
 let ispairbotPool = true;
 
 c.drawGrid();
+c.drawPool();
 
 canvas.addEventListener("click", function (event) {
   const rect = canvas.getBoundingClientRect();
@@ -318,6 +319,7 @@ function setGlobalColor() {
 
 function doDrawFuncs() {
   c.drawGrid();
+  c.drawPool();
   IsLeader();
   c.drawPairbotLine();
   c.drawRobot();

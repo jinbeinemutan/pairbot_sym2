@@ -20,6 +20,10 @@ class Pairbot {
     return this.color;
   }
 
+  getID(){
+    return this.id;
+  }
+
   pairLookPhase() {
     this.robA.lookPhase();
     this.robB.lookPhase();

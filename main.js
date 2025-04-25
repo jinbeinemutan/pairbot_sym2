@@ -18,6 +18,7 @@ let isleaderColoring = false;
 let keypress = false;
 let globalLight = 0;
 let ispairbotPool = true;
+let idcounter = 1;
 
 c.drawGrid();
 c.drawPool();
@@ -34,14 +35,35 @@ canvas.addEventListener("click", function (event) {
   }
 
   if (event.ctrlKey) {
+    let tmp = c.getRTB(xw, yh);
+    let leng = tmp.length;
+    for (let i = 1; i < leng; i++) {
+      let deleteID = tmp[i];
+      if (deleteID == -1) {
+        c.RTB_RM(xw, yh, deleteID);
+      } else {
+        let int = pairArrayID(deleteID);
+        if (pairArray[int].getIsLong()) {
+          let robAx = pairArray[int].robA.x;
+          let robAy = pairArray[int].robA.y;
+          let robBx = pairArray[int].robB.x;
+          let robBy = pairArray[int].robB.y;
+          c.RTB_RM(Math.floor(RTB_w / 2) + robAx, Math.floor(RTB_h / 2) + robAy, deleteID);
+          c.RTB_RM(Math.floor(RTB_w / 2) + robBx, Math.floor(RTB_h / 2) + robBy, deleteID);
+        } else {
+          c.RTB_RM(xw, yh, deleteID);
+          c.RTB_RM(xw, yh, deleteID);
+          pairArray.splice(int, 1);
+          i++;
+        }
+      }
+    }
   }
 
   if (c.getRTB(xw, yh).length == 1) {
     if (!keypress) {
-      pairArray.push(
-        new Pairbot(pairArray.length + 1, xw, yh, globalColor, longdirct, globalLight)
-      );
-    } else {
+      pairArray.push(new Pairbot(idcounter++, xw, yh, globalColor, longdirct, globalLight));
+    } else if (!event.ctrlKey) {
       c.setRTB(xw, yh, -1);
     }
   }
@@ -75,6 +97,7 @@ document.getElementById("all_delete").onsubmit = function (event) {
     document.getElementById("AAA").value = "AutoMode start";
   }
   pairArray = [];
+  idcounter = 0;
   // RTBArray.length = 1;
   for (let i = 0; i < RTB_w; i++) {
     for (let j = 0; j < RTB_h; j++) {
@@ -276,7 +299,7 @@ memorySelect.addEventListener("change", function () {
     document.getElementById("AAA").value = "AutoMode start";
   }
   pairArray = [];
-  // RTBArray.length = 1;
+  idcounter = 0;
   for (let i = 0; i < RTB_w; i++) {
     for (let j = 0; j < RTB_h; j++) {
       c.RTB[i][j].length = 1;
@@ -393,4 +416,15 @@ function pairbotPool(x, y) {
   if (c.getRTB(x, y).toString() === [0].toString()) {
     pairArray.push(new Pairbot(pairArray.length + 1, x, y, globalColor, [0, 0], 0));
   }
+}
+
+function pairArrayID(id) {
+  let i = 0;
+  for (i; i < pairArray.length; i++) {
+    if (pairArray[i].getID() == id) {
+      return i;
+    }
+  }
+  console.log("error:function pairArrayID is not hit");
+  return -1;
 }

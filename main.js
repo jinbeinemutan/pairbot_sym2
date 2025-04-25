@@ -4,10 +4,11 @@ const ctx = canvas.getContext("2d");
 let c = new Canvas(); // canvasの初期化&RTB
 let pairArray = []; //全てのpairbotを格納してるリスト
 
-let nowAlgo = new Algorithm("nowAlgo", "F", true, 0, testLightRule, true);
+let nowAlgo = new Algorithm("nowAlgo", "F", true, 0, FillnCoverExRule, true);
 let AlgoLepX = new Algorithm("AlgoLepX", "S", false, 1, R_LEP_x, false);
 let AlogMakeLine = new Algorithm("AlogMakeLine", "S", false, 2, R_makeLine_xy, false);
 let Algofilling = new Algorithm("Algofilling", "S", true, 0, testLightRule, true);
+let AlgoFillnCoverEx = new Algorithm("AlgoFillingnCoverEx", "S", true, 0, FillnCoverExRule, true);
 
 var intervalId;
 let isCheet = false;
@@ -114,7 +115,7 @@ SyncSelect.addEventListener("change", function () {
 });
 
 let AlgoSelect = document.getElementById("myAlgo");
-AlgoSelect.options[2].selected = true;
+AlgoSelect.options[3].selected = true;
 AlgoSelect.addEventListener("change", function () {
   switch (AlgoSelect.value) {
     case "LEP_x":
@@ -135,7 +136,13 @@ AlgoSelect.addEventListener("change", function () {
       nowAlgo.setRule(testLightRule);
       nowAlgo.setIsLight(true);
       nowAlgo.setIsChirality(true);
-      SyncSelect.options[2].selected = true;
+
+      break;
+    case "Extest":
+      nowAlgo.setRule(FillnCoverExRule);
+      nowAlgo.setIsLight(true);
+      nowAlgo.setIsChirality(true);
+
       break;
     default:
       window.alert("error: none of MyAlgo.value is selected");

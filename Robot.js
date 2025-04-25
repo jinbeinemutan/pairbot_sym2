@@ -234,6 +234,8 @@ function xy2dct(a, b) {
   if (a == -1 && b == 0) return 4;
   if (a == 0 && b == -1) return 5;
   if (a == 1 && b == -1) return 6;
+  alert("error function xy2dct");
+  return 0;
 }
 
 function id2light(id) {

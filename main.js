@@ -48,14 +48,14 @@ canvas.addEventListener("click", function (event) {
           let robAy = pairArray[int].robA.y;
           let robBx = pairArray[int].robB.x;
           let robBy = pairArray[int].robB.y;
-          c.RTB_RM(Math.floor(RTB_w / 2) + robAx, Math.floor(RTB_h / 2) + robAy, deleteID);
-          c.RTB_RM(Math.floor(RTB_w / 2) + robBx, Math.floor(RTB_h / 2) + robBy, deleteID);
+          c.RTB_RM(robAx, robAy, deleteID);
+          c.RTB_RM(robBx, robBy, deleteID);
         } else {
           c.RTB_RM(xw, yh, deleteID);
           c.RTB_RM(xw, yh, deleteID);
-          pairArray.splice(int, 1);
           i++;
         }
+        pairArray.splice(int, 1);
       }
     }
   }
@@ -97,7 +97,7 @@ document.getElementById("all_delete").onsubmit = function (event) {
     document.getElementById("AAA").value = "AutoMode start";
   }
   pairArray = [];
-  idcounter = 0;
+  idcounter = 1;
   // RTBArray.length = 1;
   for (let i = 0; i < RTB_w; i++) {
     for (let j = 0; j < RTB_h; j++) {
@@ -299,7 +299,7 @@ memorySelect.addEventListener("change", function () {
     document.getElementById("AAA").value = "AutoMode start";
   }
   pairArray = [];
-  idcounter = 0;
+  idcounter = 1;
   for (let i = 0; i < RTB_w; i++) {
     for (let j = 0; j < RTB_h; j++) {
       c.RTB[i][j].length = 1;
@@ -319,7 +319,7 @@ memorySelect.addEventListener("change", function () {
 });
 
 function setGlobalColor() {
-  switch ((pairArray.length + 1) % 8) {
+  switch ((idcounter + 1) % 8) {
     case 0:
       globalColor = "#ffffff";
       break;
@@ -414,7 +414,7 @@ function pairbotPool(x, y) {
     setGlobalColor();
   }
   if (c.getRTB(x, y).toString() === [0].toString()) {
-    pairArray.push(new Pairbot(pairArray.length + 1, x, y, globalColor, [0, 0], 0));
+    pairArray.push(new Pairbot(idcounter++, x, y, globalColor, [0, 0], 0));
   }
 }
 

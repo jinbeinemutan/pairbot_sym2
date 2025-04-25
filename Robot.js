@@ -132,7 +132,7 @@ class Robot {
       c.setRTB(this.x + this.nextgo[0], this.y + this.nextgo[1], this.id);
       this.x += this.nextgo[0];
       this.y += this.nextgo[1];
-      pairArray[this.id - 1].setLight(this.nextLight);
+      pairArray[pairArrayID(this.id)].setLight(this.nextLight);
     }
   }
 
@@ -239,5 +239,5 @@ function xy2dct(a, b) {
 }
 
 function id2light(id) {
-  return pairArray[id - 1].light;
+  return pairArray[pairArrayID(id)].light;
 }

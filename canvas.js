@@ -157,8 +157,8 @@ class Canvas {
           if (this.RTB[i][j][k] > 0) {
             //robot
             ctx.lineWidth = 6;
-            ctx.strokeStyle = num2color(pairArray[this.RTB[i][j][k] - 1].light);
-            ctx.fillStyle = pairArray[this.RTB[i][j][k] - 1].color;
+            ctx.strokeStyle = num2color(pairArray[pairArrayID(this.RTB[i][j][k])].light);
+            ctx.fillStyle = pairArray[pairArrayID(this.RTB[i][j][k])].color;
             let x = i - Math.floor(RTB_w / 2);
             let y = j - Math.floor(RTB_h / 2);
             ctx.beginPath();
@@ -199,7 +199,7 @@ class Canvas {
     this.RTB[x + Math.floor(RTB_w / 2)][y + Math.floor(RTB_h / 2)].push(id);
   }
   getRTB(x, y) {
-    return this.RTB[x + Math.floor(RTB_w / 2)][y + Math.floor(RTB_h / 2)];
+    return this.RTB[x + Math.floor(RTB_w / 2)][y + Math.floor(RTB_h / 2)].concat();
   }
   RTB_RM(x, y, id) {
     for (

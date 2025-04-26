@@ -2,6 +2,8 @@ const canvas = document.getElementById("gridCanvas");
 const ctx = canvas.getContext("2d");
 
 let c = new Canvas(); // canvasの初期化&RTB
+let cp = new Canvas();
+
 let pairArray = []; //全てのpairbotを格納してるリスト
 
 let nowAlgo = new Algorithm("nowAlgo", "F", true, 0, FillnCoverExRule, true);
@@ -19,6 +21,8 @@ let keypress = false;
 let globalLight = 0;
 let ispairbotPool = true;
 let idcounter = 1;
+
+let pairArrayCP = [];
 
 c.drawGrid();
 c.drawPool();
@@ -62,7 +66,9 @@ canvas.addEventListener("click", function (event) {
 
   if (c.getRTB(xw, yh).length == 1) {
     if (!keypress) {
-      pairArray.push(new Pairbot(idcounter++, xw, yh, globalColor, longdirct, globalLight));
+      let tmp = new Pairbot(idcounter++, xw, yh, globalColor, longdirct, globalLight);
+      pairArray.push(tmp);
+      tmp.pairSetRTB();
     } else if (!event.ctrlKey) {
       c.setRTB(xw, yh, -1);
     }
@@ -156,9 +162,7 @@ AlgoSelect.addEventListener("change", function () {
       nowAlgo.setIsChirality(false);
       break;
     case "lightest":
-      nowAlgo.setRule(testLightRule);
-      nowAlgo.setIsLight(true);
-      nowAlgo.setIsChirality(true);
+      nowAlgo.setAll(Algofilling);
 
       break;
     case "Extest":
@@ -307,14 +311,17 @@ memorySelect.addEventListener("change", function () {
   }
   switch (memorySelect.value) {
     case "test1":
-      c.RTB_CP(RTB_MEM2);
+      RTB_CP(RTB_MEM2, c.getAll());
+      ArrayCP(pairArrayCP, pairArray);
       break;
     case "test2":
-      c.RTB_CP(RTB_MEM);
+      RTB_CP(cp.getAll(), c.getAll());
+      ArrayCP(pairArrayCP, pairArray);
       break;
     default:
     // window.alert("error: none of memory.value is selected");
   }
+  idcounter = pairArray.length + 1;
   doDrawFuncs();
 });
 
@@ -414,7 +421,9 @@ function pairbotPool(x, y) {
     setGlobalColor();
   }
   if (c.getRTB(x, y).toString() === [0].toString()) {
-    pairArray.push(new Pairbot(idcounter++, x, y, globalColor, [0, 0], 0));
+    let tmp = new Pairbot(idcounter++, x, y, globalColor, [0, 0], 0);
+    pairArray.push(tmp);
+    tmp.pairSetRTB();
   }
 }
 
@@ -427,4 +436,13 @@ function pairArrayID(id) {
   }
   console.log("error:function pairArrayID is not hit");
   return -1;
+}
+
+function ArrayCP(a, b) {
+  //aをbにコピー
+  for (let i = 0; i < a.length; i++) {
+    let pbtmp = new Pairbot(99, 99, 99, 99, [0, 0], 99);
+    pbtmp.setAll(a[i]);
+    b.push(pbtmp);
+  }
 }

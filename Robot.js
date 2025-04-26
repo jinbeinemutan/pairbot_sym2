@@ -1,5 +1,5 @@
 class Robot {
-  constructor(id, x, y) {
+  constructor(id, x, y,light) {
     this.id = id;
     this.x = x;
     this.y = y;
@@ -7,10 +7,9 @@ class Robot {
 
     //[ロボの数(+Obj)，lightの色…]
     this.nextgo = [0, 0];
-    this.light;
+    this.light = light;
     this.nextLight;
     this.whereIsPair = 0;
-    c.setRTB(x, y, id);
   }
 
   lookPhase() {
@@ -136,6 +135,28 @@ class Robot {
     }
   }
 
+  getID() {
+    return this.id;
+  }
+  setID(id) {
+    this.id = id;
+  }
+  getX() {
+    return this.x;
+  }
+  setX(x) {
+    this.x = x;
+  }
+  getY() {
+    return this.y;
+  }
+  setY(y) {
+    this.y = y;
+  }
+  getLight() {
+    return this.light;
+  }
+
   setLight(light) {
     this.light = light;
     this.nextLight = light;
@@ -150,6 +171,13 @@ class Robot {
     }
     ret[8] = [move, light];
     console.log(ret);
+  }
+
+  setcp(rob) {
+    this.setID(rob.getID());
+    this.setX(rob.getX());
+    this.setY(rob.getY());
+    this.setLight(rob.getLight());
   }
 }
 

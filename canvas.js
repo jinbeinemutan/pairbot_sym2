@@ -22,13 +22,13 @@ class Canvas {
   }
 
   drawPool() {
-    ctx.strokeStyle = "grey"
+    ctx.strokeStyle = "grey";
     ctx.fillStyle = "grey";
     ctx.beginPath();
     ctx.arc(
       // w / 2 +a * (x * Math.round(Math.sqrt(3)) + y),
       a,
-      h/2,
+      h / 2,
       18,
       0,
       Math.PI * 2
@@ -95,10 +95,7 @@ class Canvas {
         let robBx = pairArray[i].robB.x;
         let robBy = pairArray[i].robB.y;
         //力技
-        let pileAOfNode = //robAのいる座標の下に何台ロボットがいるか調べる
-          this.RTB[Math.floor(RTB_w / 2) + robAx][
-            Math.floor(RTB_h / 2) + robAy
-          ];
+        let pileAOfNode = this.RTB[Math.floor(RTB_w / 2) + robAx][Math.floor(RTB_h / 2) + robAy]; //robAのいる座標の下に何台ロボットがいるか調べる
         let tmp;
         for (tmp = 1; tmp < pileAOfNode.length; tmp++) {
           //RTBは最初から0が入っている(gm)
@@ -106,10 +103,7 @@ class Canvas {
             break;
           }
         }
-        let pileBOfNode = //robBのいる座標の下に何台ロボットがいるか調べる
-          this.RTB[Math.floor(RTB_w / 2) + robBx][
-            Math.floor(RTB_h / 2) + robBy
-          ];
+        let pileBOfNode = this.RTB[Math.floor(RTB_w / 2) + robBx][Math.floor(RTB_h / 2) + robBy]; //robBのいる座標の下に何台ロボットがいるか調べる
         let foo;
         for (foo = 1; foo < pileBOfNode.length; foo++) {
           //RTBは最初から0が入っている(gm)
@@ -207,25 +201,31 @@ class Canvas {
       i < this.RTB[x + Math.floor(RTB_w / 2)][y + Math.floor(RTB_h / 2)].length;
       i++
     ) {
-      if (
-        this.RTB[x + Math.floor(RTB_w / 2)][y + Math.floor(RTB_h / 2)][i] == id
-      ) {
-        this.RTB[x + Math.floor(RTB_w / 2)][y + Math.floor(RTB_h / 2)].splice(
-          i,
-          1
-        );
+      if (this.RTB[x + Math.floor(RTB_w / 2)][y + Math.floor(RTB_h / 2)][i] == id) {
+        this.RTB[x + Math.floor(RTB_w / 2)][y + Math.floor(RTB_h / 2)].splice(i, 1);
         break;
       }
     }
   }
 
-  RTB_CP(memory) {
-    for (let i = 0; i < RTB_w; i++) {
-      for (let j = 0; j < RTB_h; j++) {
-        this.RTB[i][j].length = memory[i][j].length;
-        for (let k = 0; k < memory[i][j].length; k++) {
-          this.RTB[i][j][k] = memory[i][j][k];
-        }
+  addPairArray(Array) {
+    for (let i = 0; i < Array.length; i++) {
+      this.setRTB(Array[i].getRobA().getX(), Array[i].getRobA().getY(), Array[i].getID());
+      this.setRTB(Array[i].getRobB().getX(), Array[i].getRobB().getY(), Array[i].getID());
+    }
+  }
+  getAll(){
+    return this.RTB;
+  }
+}
+
+function RTB_CP(memory, newRTB) {
+  //memoryをnewRTBにコピー
+  for (let i = 0; i < RTB_w; i++) {
+    for (let j = 0; j < RTB_h; j++) {
+      newRTB[i][j].length = memory[i][j].length;
+      for (let k = 0; k < memory[i][j].length; k++) {
+        newRTB[i][j][k] = memory[i][j][k];
       }
     }
   }
@@ -258,14 +258,8 @@ function hexagon(posx, posy, length) {
   ctx.moveTo(posx, posy);
   ctx.lineTo(posx + length, posy);
   ctx.lineTo(posx + length + length / 2, posy + (Math.sqrt(3) * length) / 2);
-  ctx.lineTo(
-    posx + length,
-    posy + (Math.sqrt(3) * length) / 2 + (Math.sqrt(3) * length) / 2
-  );
-  ctx.lineTo(
-    posx,
-    posy + (Math.sqrt(3) * length) / 2 + (Math.sqrt(3) * length) / 2
-  );
+  ctx.lineTo(posx + length, posy + (Math.sqrt(3) * length) / 2 + (Math.sqrt(3) * length) / 2);
+  ctx.lineTo(posx, posy + (Math.sqrt(3) * length) / 2 + (Math.sqrt(3) * length) / 2);
   ctx.lineTo(posx - length / 2, posy + (Math.sqrt(3) * length) / 2);
   ctx.lineTo(posx, posy);
   ctx.stroke();

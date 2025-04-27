@@ -495,7 +495,7 @@ function cpCircum() {
     }
   }
 
-  if (pairArrayCP.length > 10) {
+  if (pairArrayCP.length > 20) {
     pairArrayCP.shift();
     canvasCP.shift();
     pointer--;

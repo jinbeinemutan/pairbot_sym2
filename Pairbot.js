@@ -66,6 +66,10 @@ class Pairbot {
     this.light = light;
   }
 
+  setIsActivate(bool){
+    this.isActivate = bool;
+  }
+
   setAll(pb) {
     this.setID(pb.getID());
     this.setIsActivate(pb.getIsActivate());
@@ -74,6 +78,7 @@ class Pairbot {
     this.setLight(pb.getLight());
     this.setRobA(pb.getRobA());
     this.setRobB(pb.getRobB());
+    this.setIsLong();
   }
 
   pairSetRTB() {

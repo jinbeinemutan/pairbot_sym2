@@ -214,7 +214,7 @@ class Canvas {
       this.setRTB(Array[i].getRobB().getX(), Array[i].getRobB().getY(), Array[i].getID());
     }
   }
-  getAll(){
+  getAll() {
     return this.RTB;
   }
 }
@@ -223,9 +223,9 @@ function RTB_CP(memory, newRTB) {
   //memoryをnewRTBにコピー
   for (let i = 0; i < RTB_w; i++) {
     for (let j = 0; j < RTB_h; j++) {
-      newRTB[i][j].length = memory[i][j].length;
+      newRTB[i][j] = [];
       for (let k = 0; k < memory[i][j].length; k++) {
-        newRTB[i][j][k] = memory[i][j][k];
+        newRTB[i][j].push(memory[i][j][k]);
       }
     }
   }

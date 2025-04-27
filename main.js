@@ -23,6 +23,7 @@ let idcounter = 1;
 
 let pairArrayCP = [];
 let canvasCP = [];
+let pointer = -1;
 
 c.drawGrid();
 c.drawPool();
@@ -40,7 +41,6 @@ canvas.addEventListener("click", function (event) {
   }
 
   if (event.ctrlKey) {
-    cpCircum();
     let tmp = c.getRTB(xw, yh);
     let leng = tmp.length;
     for (let i = 1; i < leng; i++) {
@@ -64,17 +64,18 @@ canvas.addEventListener("click", function (event) {
         pairArray.splice(int, 1);
       }
     }
+    cpCircum();
   }
 
   if (c.getRTB(xw, yh).length == 1) {
     if (!keypress) {
-      cpCircum();
       let tmp = new Pairbot(idcounter++, xw, yh, globalColor, longdirct, globalLight);
       pairArray.push(tmp);
       tmp.pairSetRTB();
-    } else if (!event.ctrlKey) {
       cpCircum();
+    } else if (!event.ctrlKey) {
       c.setRTB(xw, yh, -1);
+      cpCircum();
     }
   }
 
@@ -157,7 +158,7 @@ AlgoSelect.addEventListener("change", function () {
       break;
     case "line_xy":
       nowAlgo.setAll(AlogMakeLine);
-      SyncSelect.options[0].selected = true;
+      SyncSelect.options[1].selected = true;
       break;
     case "lightest":
       nowAlgo.setAll(Algofilling);
@@ -329,6 +330,16 @@ document.getElementById("ando").onsubmit = function (event) {
   ando();
 };
 
+document.getElementById("redo").onsubmit = function (event) {
+  event.preventDefault();
+  if (intervalId) {
+    clearInterval(intervalId); // タイマーが動いている場合は停止する
+    intervalId = null; // タイマーIDをクリアする
+    document.getElementById("AAA").value = "AutoMode start";
+  }
+  redo();
+};
+
 function setGlobalColor() {
   switch ((idcounter + 1) % 8) {
     case 0:
@@ -467,23 +478,55 @@ function ArrayCP(a, b) {
 }
 
 function cpCircum() {
+  // if (pairArrayCP.length > 10) {
+  //   pairArrayCP.shift();
+  //   canvasCP.shift();
+  //   pointer = pairArrayCP.length - 1;
+  // }
+
+  let int = pairArrayCP.length;
+  if (pointer != int - 1) {
+    let tmp = int - 1;
+    while (true) {
+      pairArrayCP.pop();
+      canvasCP.pop();
+      tmp--;
+      if (tmp == pointer) break;
+    }
+  }
+
   if (pairArrayCP.length > 10) {
     pairArrayCP.shift();
     canvasCP.shift();
+    pointer--;
   }
+
   let tmpc = new Canvas();
   RTB_CP(c.RTB, tmpc.RTB);
   canvasCP.push(tmpc.RTB);
   let foo = [];
   ArrayCP(pairArray, foo);
   pairArrayCP.push(foo);
+  pointer++;
 }
 
 function ando() {
-  if (pairArrayCP.length > 0) {
-    RTB_CP(canvasCP.pop(), c.RTB);
+  if (pairArrayCP.length > 0 && pointer > 0) {
+    pointer--;
+    RTB_CP(canvasCP[pointer], c.RTB);
     pairArray = [];
-    ArrayCP(pairArrayCP.pop(), pairArray);
+    ArrayCP(pairArrayCP[pointer], pairArray);
+    idcounter = pairArray.length + 1;
+    doDrawFuncs();
+  }
+}
+
+function redo() {
+  if (pointer <= pairArrayCP.length - 2) {
+    pointer++;
+    RTB_CP(canvasCP[pointer], c.RTB);
+    pairArray = [];
+    ArrayCP(pairArrayCP[pointer], pairArray);
     idcounter = pairArray.length + 1;
     doDrawFuncs();
   }

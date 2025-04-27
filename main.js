@@ -40,6 +40,7 @@ canvas.addEventListener("click", function (event) {
   }
 
   if (event.ctrlKey) {
+    cpCircum();
     let tmp = c.getRTB(xw, yh);
     let leng = tmp.length;
     for (let i = 1; i < leng; i++) {
@@ -67,10 +68,12 @@ canvas.addEventListener("click", function (event) {
 
   if (c.getRTB(xw, yh).length == 1) {
     if (!keypress) {
+      cpCircum();
       let tmp = new Pairbot(idcounter++, xw, yh, globalColor, longdirct, globalLight);
       pairArray.push(tmp);
       tmp.pairSetRTB();
     } else if (!event.ctrlKey) {
+      cpCircum();
       c.setRTB(xw, yh, -1);
     }
   }
@@ -149,28 +152,20 @@ AlgoSelect.options[3].selected = true;
 AlgoSelect.addEventListener("change", function () {
   switch (AlgoSelect.value) {
     case "LEP_x":
-      nowAlgo.setRule(R_LEP_x);
-      nowAlgo.setSync("S");
-      nowAlgo.setIsLight(false);
-      nowAlgo.setIsChirality(false);
+      nowAlgo.setAll(AlgoLepX);
       SyncSelect.options[1].selected = true;
       break;
     case "line_xy":
-      nowAlgo.setRule(R_makeLine_xy);
-      nowAlgo.setSync("F");
+      nowAlgo.setAll(AlogMakeLine);
       SyncSelect.options[0].selected = true;
-      nowAlgo.setIsLight(false);
-      nowAlgo.setIsChirality(false);
       break;
     case "lightest":
       nowAlgo.setAll(Algofilling);
-
+      SyncSelect.options[1].selected = true;
       break;
     case "Extest":
-      nowAlgo.setRule(FillnCoverExRule);
-      nowAlgo.setIsLight(true);
-      nowAlgo.setIsChirality(true);
-
+      nowAlgo.setAll(AlgoFillnCoverEx);
+      SyncSelect.options[1].selected = true;
       break;
     default:
       window.alert("error: none of MyAlgo.value is selected");

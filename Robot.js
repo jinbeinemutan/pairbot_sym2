@@ -1,5 +1,5 @@
 class Robot {
-  constructor(id, x, y,light) {
+  constructor(id, x, y, light) {
     this.id = id;
     this.x = x;
     this.y = y;
@@ -76,19 +76,30 @@ class Robot {
     let div = 1;
     let ruleCollisionditect = [];
 
-    if (nowAlgo.getIsChirality()) {
+    if (!nowAlgo.getIsChirality() && nowAlgo.getAxiAgreement() == 0) {
+      div = 12;
+      for (let i = 0; i < foo.length; i++) {
+        let aaa = makeRuleChirality(foo[i]);
+        for (let j = 0; j < aaa.length; j++) {
+          let bbb = makeRuleSymmetry(aaa[j]);
+          for (let k = 0; k < bbb.length; k++) {
+            rule.push(bbb[k]);
+          }
+        }
+      }
+    } else if (nowAlgo.getIsChirality()) {
       div = 6;
       for (let i = 0; i < foo.length; i++) {
         let aaa = makeRuleChirality(foo[i]);
-        for (let j = 0; j < 6; j++) {
+        for (let j = 0; j < aaa.length; j++) {
           rule.push(aaa[j]);
         }
       }
-    } else if (nowAlgo.getAxiAgreement == 1) {
+    } else if (nowAlgo.getAxiAgreement() == 1) {
       div = 2;
       for (let i = 0; i < foo.length; i++) {
-        let aaa = makeRuleChirality(foo[i]);
-        for (let j = 0; j < 2; j++) {
+        let aaa = makeRuleSymmetry(foo[i]);
+        for (let j = 0; j < aaa.length; j++) {
           rule.push(aaa[j]);
         }
       }
@@ -107,20 +118,22 @@ class Robot {
         ruleCollisionditect.push(parseInt(i / div));
       }
     }
-    if (ruleCollisionditect.length > 1) {
-      if (ruleCollisionditect[0] != ruleCollisionditect[1])
+
+    for (let i = 0; i < ruleCollisionditect.length - 1; i++) {
+      if (ruleCollisionditect[i] != ruleCollisionditect[i + 1]) {
         alert(
           "rule collision detect! id = " +
             this.id +
             "\n" +
-            ruleCollisionditect[0] +
+            ruleCollisionditect[i] +
             ": " +
-            nowAlgo.getRule()[ruleCollisionditect[0]].toString() +
+            nowAlgo.getRule()[ruleCollisionditect[i]].toString() +
             "\n" +
-            ruleCollisionditect[1] +
+            ruleCollisionditect[i + 1] +
             ": " +
-            nowAlgo.getRule()[ruleCollisionditect[1]].toString()
+            nowAlgo.getRule()[ruleCollisionditect[i + 1]].toString()
         );
+      }
     }
   }
 

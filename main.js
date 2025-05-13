@@ -10,6 +10,7 @@ let AlgoLepX = new Algorithm("AlgoLepX", "S", false, 1, R_LEP_x, false);
 let AlogMakeLine = new Algorithm("AlogMakeLine", "S", false, 2, R_makeLine_xy, false);
 let Algofilling = new Algorithm("Algofilling", "S", true, 0, testLightRule, true);
 let AlgoFillnCoverEx = new Algorithm("AlgoFillingnCoverEx", "S", true, 0, FillnCoverExRule, true);
+let AlgoExploration = new Algorithm("AlgoExploration", "F", false, 0, ExplorationRule, true);
 
 var intervalId;
 let isCheet = false;
@@ -149,7 +150,8 @@ SyncSelect.addEventListener("change", function () {
 });
 
 let AlgoSelect = document.getElementById("myAlgo");
-AlgoSelect.options[3].selected = true;
+AlgoSelect.options[4].selected = true;
+nowAlgo.setAll(AlgoExploration);
 AlgoSelect.addEventListener("change", function () {
   switch (AlgoSelect.value) {
     case "LEP_x":
@@ -167,6 +169,10 @@ AlgoSelect.addEventListener("change", function () {
     case "Extest":
       nowAlgo.setAll(AlgoFillnCoverEx);
       SyncSelect.options[1].selected = true;
+      break;
+    case "Exploration":
+      nowAlgo.setAll(AlgoExploration);
+      SyncSelect.options[0].selected = true;
       break;
     default:
       window.alert("error: none of MyAlgo.value is selected");
@@ -378,7 +384,6 @@ function doDrawFuncs() {
 }
 
 function LCM() {
-  cpCircum();
   if (nowAlgo.getSync() == "A") {
     for (let i = 0; i < 3; i++) {
       let r = Math.floor(Math.random() * pairArray.length);
@@ -410,6 +415,7 @@ function LCM() {
   }
   pairbotPool(-12, 0);
   doDrawFuncs();
+  cpCircum();
 }
 
 function idlcm(...n) {

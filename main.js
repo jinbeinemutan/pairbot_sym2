@@ -27,7 +27,7 @@ let canvasCP = [];
 let pointer = -1;
 
 c.drawGrid();
-c.drawPool();
+// c.drawPool();
 cpCircum();
 
 canvas.addEventListener("click", function (event) {
@@ -346,6 +346,24 @@ document.getElementById("redo").onsubmit = function (event) {
   redo();
 };
 
+document.getElementById("initA").onsubmit = function (event) {
+  event.preventDefault();
+  if (intervalId) {
+    clearInterval(intervalId); // タイマーが動いている場合は停止する
+    intervalId = null; // タイマーIDをクリアする
+    document.getElementById("AAA").value = "AutoMode start";
+  }
+  pairArray = [];
+  idcounter = 1;
+  // RTBArray.length = 1;
+  for (let i = 0; i < RTB_w; i++) {
+    for (let j = 0; j < RTB_h; j++) {
+      c.RTB[i][j].length = 1;
+    }
+  }
+  initA154();
+};
+
 function setGlobalColor() {
   switch ((idcounter + 1) % 8) {
     case 0:
@@ -377,7 +395,7 @@ function setGlobalColor() {
 
 function doDrawFuncs() {
   c.drawGrid();
-  c.drawPool();
+  // c.drawPool();
   IsLeader();
   c.drawPairbotLine();
   c.drawRobot();
@@ -413,7 +431,7 @@ function LCM() {
       }
     }
   }
-  pairbotPool(-12, 0);
+  // pairbotPool(-12, 0);
   doDrawFuncs();
   cpCircum();
 }
@@ -428,7 +446,7 @@ function idlcm(...n) {
   for (let i = 0; i < n.length; i++) {
     pairArray[pairArrayID(n[i])].pairMovePhase();
   }
-  pairbotPool(-12, 0);
+  // pairbotPool(-12, 0);
   doDrawFuncs();
 }
 
@@ -536,4 +554,28 @@ function redo() {
     idcounter = pairArray.length + 1;
     doDrawFuncs();
   }
+}
+
+//探索問題の初期状況を手打ち
+function initA154() {
+  let initAxyc = [
+    [-3, 2, 1],
+    [-2, 2, 1],
+    [-2, 1, 2],
+    [-1, 1, 4],
+    [-1, 2, 3],
+  ];
+  for (let i = 0; i < initAxyc.length; i++) {
+    let tmp = new Pairbot(
+      idcounter++,
+      initAxyc[i][0],
+      initAxyc[i][1],
+      "#ffffff",
+      [0, 0],
+      initAxyc[i][2]
+    );
+    pairArray.push(tmp);
+    tmp.pairSetRTB();
+  }
+  doDrawFuncs();
 }

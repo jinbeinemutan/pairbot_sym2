@@ -1,10 +1,10 @@
 //global 変数
-const w = 1500;
-const h = 600;
+const w = 1200;
+const h = 800;
 const a = 30; //1:2:Math.sqrt(3)の1
 const w_ofset = ((h / 2) * Math.sqrt(3)) / 3;
 const RTB_h = 17;
-const RTB_w = 35;
+const RTB_w = 30;
 
 class Canvas {
   constructor() {

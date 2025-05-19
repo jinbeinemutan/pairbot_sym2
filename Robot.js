@@ -133,6 +133,11 @@ class Robot {
             ": " +
             nowAlgo.getRule()[ruleCollisionditect[i + 1]].toString()
         );
+        if (intervalId) {
+          clearInterval(intervalId); // タイマーが動いている場合は停止する
+          intervalId = null; // タイマーIDをクリアする
+          document.getElementById("AAA").value = "AutoMode start";
+        }
       }
     }
   }
@@ -176,6 +181,7 @@ class Robot {
   }
 
   ruleMaker(move, light) {
+    this.lookPhase();
     this.nextLight = this.light;
     let ret = new Array(9);
     ret[0] = [this.whereIsPair, this.light];

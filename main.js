@@ -12,6 +12,8 @@ let Algofilling = new Algorithm("Algofilling", "S", true, 0, testLightRule, true
 let AlgoFillnCoverEx = new Algorithm("AlgoFillingnCoverEx", "S", true, 0, FillnCoverExRule, true);
 let AlgoExploration = new Algorithm("AlgoExploration", "F", false, 0, ExplorationRule, true);
 
+let AlgoExploExLight = new Algorithm("AlgoExploExLight", "F", false, 0, ExploExlightRule, true);
+
 var intervalId;
 let isCheet = false;
 let globalColor = "#ffffff";
@@ -150,8 +152,8 @@ SyncSelect.addEventListener("change", function () {
 });
 
 let AlgoSelect = document.getElementById("myAlgo");
-AlgoSelect.options[4].selected = true;
-nowAlgo.setAll(AlgoExploration);
+AlgoSelect.options[5].selected = true;
+nowAlgo.setAll(AlgoExploExLight);
 AlgoSelect.addEventListener("change", function () {
   switch (AlgoSelect.value) {
     case "LEP_x":
@@ -172,6 +174,10 @@ AlgoSelect.addEventListener("change", function () {
       break;
     case "Exploration":
       nowAlgo.setAll(AlgoExploration);
+      SyncSelect.options[0].selected = true;
+      break;
+     case "Exploration_exlight":
+      nowAlgo.setAll(AlgoExploExLight);
       SyncSelect.options[0].selected = true;
       break;
     default:

@@ -71,40 +71,57 @@ class Robot {
       }
     }
 
-    let foo = nowAlgo.getRule();
-    let rule = [];
+    let rule = nowAlgo.getRule();
     let div = 1;
     let ruleCollisionditect = [];
 
     if (!nowAlgo.getIsChirality() && nowAlgo.getAxiAgreement() == 0) {
-      div = 12;
-      for (let i = 0; i < foo.length; i++) {
-        let aaa = makeRuleChirality(foo[i]);
+      let rulecp = [];
+      div = div * 12;
+      for (let i = 0; i < rule.length; i++) {
+        let aaa = makeRuleChirality(rule[i]);
         for (let j = 0; j < aaa.length; j++) {
           let bbb = makeRuleSymmetry(aaa[j]);
           for (let k = 0; k < bbb.length; k++) {
-            rule.push(bbb[k]);
+            rulecp.push(bbb[k]);
           }
         }
       }
-    } else if (nowAlgo.getIsChirality()) {
-      div = 6;
-      for (let i = 0; i < foo.length; i++) {
-        let aaa = makeRuleChirality(foo[i]);
+      rule = JSON.parse(JSON.stringify(rulecp));
+    }
+    if (nowAlgo.getIsChirality()) {
+      let rulecp = [];
+      div = div * 6;
+      for (let i = 0; i < rule.length; i++) {
+        let aaa = makeRuleChirality(rule[i]);
+        for (let j = 0; j < aaa.length; j++) {
+          rulecp.push(aaa[j]);
+        }
+      }
+      rule = JSON.parse(JSON.stringify(rulecp));
+    }
+    if (nowAlgo.getAxiAgreement() == 1) {
+      let rulecp = [];
+      div = div * 2;
+      for (let i = 0; i < rule.length; i++) {
+        let aaa = makeRuleSymmetry(rule[i]);
         for (let j = 0; j < aaa.length; j++) {
           rule.push(aaa[j]);
         }
       }
-    } else if (nowAlgo.getAxiAgreement() == 1) {
-      div = 2;
-      for (let i = 0; i < foo.length; i++) {
-        let aaa = makeRuleSymmetry(foo[i]);
+      rule = JSON.parse(JSON.stringify(rulecp));
+    }
+    if (nowAlgo.getLightType() == 2) {
+      //External
+      let rulecp = [];
+      div = div * nowAlgo.getNLight();
+      for (let i = 0; i < rule.length; i++) {
+        let aaa = makeRuleExLight(rule[i]);
         for (let j = 0; j < aaa.length; j++) {
-          rule.push(aaa[j]);
+          rulecp.push(aaa[j]);
         }
       }
-    } else {
-      rule = foo;
+      rule = JSON.parse(JSON.stringify(rulecp));
     }
     for (let i = 0; i < rule.length; i++) {
       if (compare(tmp, rule[i])) {
@@ -236,7 +253,7 @@ function compare(tmp, rule) {
         return false;
       }
       if (typeof rule[i][0] === "number" && rule[i].length > 1) {
-        if (!(tmp[i].slice(1).toString() === rule[i].slice(1).toString())) {
+        if (!(tmp[i].slice(1).sort().toString() === rule[i].slice(1).sort().toString())) {
           return false;
         }
       }

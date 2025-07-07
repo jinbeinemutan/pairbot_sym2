@@ -5,14 +5,32 @@ let c = new Canvas(); // canvasの初期化&RTB
 
 let pairArray = []; //全てのpairbotを格納してるリスト
 
-let nowAlgo = new Algorithm("nowAlgo", "F", true, 0, FillnCoverExRule, true);
-let AlgoLepX = new Algorithm("AlgoLepX", "S", false, 1, R_LEP_x, false);
-let AlogMakeLine = new Algorithm("AlogMakeLine", "S", false, 2, R_makeLine_xy, false);
-let Algofilling = new Algorithm("Algofilling", "S", true, 0, testLightRule, true);
-let AlgoFillnCoverEx = new Algorithm("AlgoFillingnCoverEx", "S", true, 0, FillnCoverExRule, true);
-let AlgoExploration = new Algorithm("AlgoExploration", "F", false, 0, ExplorationRule, true);
+let nowAlgo = new Algorithm("nowAlgo", "F", true, 0, FillnCoverExRule, true, 1, 0);
+let AlgoLepX = new Algorithm("AlgoLepX", "S", false, 1, R_LEP_x, false, 1, 0);
+let AlogMakeLine = new Algorithm("AlogMakeLine", "S", false, 2, R_makeLine_xy, false, 1, 0);
+let Algofilling = new Algorithm("Algofilling", "S", true, 0, testLightRule, true, 1, 0);
+let AlgoFillnCoverEx = new Algorithm(
+  "AlgoFillingnCoverEx",
+  "S",
+  true,
+  0,
+  FillnCoverExRule,
+  true,
+  1,
+  0
+);
+let AlgoExploration = new Algorithm("AlgoExploration", "F", false, 0, ExplorationRule, true, 4, 2);
 
-let AlgoExploExLight = new Algorithm("AlgoExploExLight", "F", false, 0, ExploExlightRule, true);
+let AlgoExploExLight = new Algorithm(
+  "AlgoExploExLight",
+  "F",
+  false,
+  0,
+  ExploExlightRule,
+  true,
+  4,
+  3
+);
 
 var intervalId;
 let isCheet = false;
@@ -152,8 +170,8 @@ SyncSelect.addEventListener("change", function () {
 });
 
 let AlgoSelect = document.getElementById("myAlgo");
-AlgoSelect.options[5].selected = true;
-nowAlgo.setAll(AlgoExploExLight);
+AlgoSelect.options[4].selected = true;
+nowAlgo.setAll(AlgoExploration);
 AlgoSelect.addEventListener("change", function () {
   switch (AlgoSelect.value) {
     case "LEP_x":
@@ -176,7 +194,7 @@ AlgoSelect.addEventListener("change", function () {
       nowAlgo.setAll(AlgoExploration);
       SyncSelect.options[0].selected = true;
       break;
-     case "Exploration_exlight":
+    case "Exploration_exlight":
       nowAlgo.setAll(AlgoExploExLight);
       SyncSelect.options[0].selected = true;
       break;

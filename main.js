@@ -603,3 +603,9 @@ function initA154() {
   }
   doDrawFuncs();
 }
+
+// プロキッズメモ
+// const button = document.getElementById("myButton");
+// button.onclick = function() {
+//   console.log("ボタンがクリックされました");
+// };

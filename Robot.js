@@ -148,7 +148,7 @@ class Robot {
             "\n" +
             ruleCollisionditect[i + 1] +
             ": " +
-            nowAlgo.getRule()[ruleCollisionditect[i + 1]].toString()
+            nowAlgo.getRule()[ruleCollisionditect[i + 1]].toString(),
         );
         if (intervalId) {
           clearInterval(intervalId); // タイマーが動いている場合は停止する

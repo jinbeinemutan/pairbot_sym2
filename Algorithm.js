@@ -39,6 +39,7 @@ class Algorithm {
   }
   setRule(rule) {
     this.rule = rule;
+    allCheckSymmetry(rule);
   }
   setIsLight(bool) {
     this.isLight = bool;

@@ -17,7 +17,7 @@ let AlgoFillnCoverEx = new Algorithm(
   FillnCoverExRule,
   true,
   1,
-  0
+  0,
 );
 let AlgoExploration = new Algorithm("AlgoExploration", "F", false, 0, ExplorationRule, true, 4, 2);
 
@@ -29,11 +29,22 @@ let AlgoExploExLight = new Algorithm(
   ExploExlightRule,
   true,
   4,
-  3
+  3,
+);
+
+const AlgoExplorationNoLight = new Algorithm(
+  "AlgoExplorationNoLight",
+  "F",
+  false,
+  0,
+  ExplorationNoLight,
+  true,
+  1,
+  0,
 );
 
 var intervalId;
-let isCheet = false;
+let isCheet = true;
 let globalColor = "#ffffff";
 let longdirct = [0, 0];
 let isleaderColoring = false;
@@ -47,7 +58,7 @@ let canvasCP = [];
 let pointer = -1;
 
 c.drawGrid();
-// c.drawPool();
+c.drawEx();
 cpCircum();
 
 canvas.addEventListener("click", function (event) {
@@ -170,8 +181,8 @@ SyncSelect.addEventListener("change", function () {
 });
 
 let AlgoSelect = document.getElementById("myAlgo");
-AlgoSelect.options[4].selected = true;
-nowAlgo.setAll(AlgoExploration);
+AlgoSelect.options[6].selected = true;
+nowAlgo.setAll(AlgoExplorationNoLight);
 AlgoSelect.addEventListener("change", function () {
   switch (AlgoSelect.value) {
     case "LEP_x":
@@ -196,6 +207,10 @@ AlgoSelect.addEventListener("change", function () {
       break;
     case "Exploration_exlight":
       nowAlgo.setAll(AlgoExploExLight);
+      SyncSelect.options[0].selected = true;
+      break;
+    case "ExplorationNoLight":
+      nowAlgo.setAll(AlgoExplorationNoLight);
       SyncSelect.options[0].selected = true;
       break;
     default:
@@ -388,6 +403,42 @@ document.getElementById("initA").onsubmit = function (event) {
   initA154();
 };
 
+document.getElementById("init6").onsubmit = function (event) {
+  event.preventDefault();
+  if (intervalId) {
+    clearInterval(intervalId); // タイマーが動いている場合は停止する
+    intervalId = null; // タイマーIDをクリアする
+    document.getElementById("AAA").value = "AutoMode start";
+  }
+  pairArray = [];
+  idcounter = 1;
+  // RTBArray.length = 1;
+  for (let i = 0; i < RTB_w; i++) {
+    for (let j = 0; j < RTB_h; j++) {
+      c.RTB[i][j].length = 1;
+    }
+  }
+  init6();
+};
+
+document.getElementById("noLight").onsubmit = function (event) {
+  event.preventDefault();
+  if (intervalId) {
+    clearInterval(intervalId); // タイマーが動いている場合は停止する
+    intervalId = null; // タイマーIDをクリアする
+    document.getElementById("AAA").value = "AutoMode start";
+  }
+  pairArray = [];
+  idcounter = 1;
+  // RTBArray.length = 1;
+  for (let i = 0; i < RTB_w; i++) {
+    for (let j = 0; j < RTB_h; j++) {
+      c.RTB[i][j].length = 1;
+    }
+  }
+  noLight();
+};
+
 function setGlobalColor() {
   switch ((idcounter + 1) % 8) {
     case 0:
@@ -419,7 +470,7 @@ function setGlobalColor() {
 
 function doDrawFuncs() {
   c.drawGrid();
-  // c.drawPool();
+  c.drawEx();
   IsLeader();
   c.drawPairbotLine();
   c.drawRobot();
@@ -596,7 +647,7 @@ function initA154() {
       initAxyc[i][1],
       "#ffffff",
       [0, 0],
-      initAxyc[i][2]
+      initAxyc[i][2],
     );
     pairArray.push(tmp);
     tmp.pairSetRTB();
@@ -604,8 +655,47 @@ function initA154() {
   doDrawFuncs();
 }
 
-// プロキッズメモ
-// const button = document.getElementById("myButton");
-// button.onclick = function() {
-//   console.log("ボタンがクリックされました");
-// };
+function init6() {
+  const initAxyc = [
+    [3, 2, 0, [0, 0]],
+    [-1, 5, 0, [0, 0]],
+    [-5, 4, 0, [0, 0]],
+    [-4, -1, 0, [0, 0]],
+    [1, -5, 0, [0, 0]],
+    [5, -4, 0, [0, 0]],
+    [4, -1, 0, [0, 1]],
+    [4, -2, 0, [0, 0]],
+    [3, 0, 0, [0, 0]],
+  ];
+  for (let i = 0; i < initAxyc.length; i++) {
+    setGlobalColor();
+    let tmp = new Pairbot(
+      idcounter++,
+      initAxyc[i][0],
+      initAxyc[i][1],
+      globalColor,
+      initAxyc[i][3],
+      initAxyc[i][2],
+    );
+    pairArray.push(tmp);
+    tmp.pairSetRTB();
+  }
+  doDrawFuncs();
+}
+
+function noLight() {
+  const xylc = [
+    [0, 2, [0, 0], 2],
+    [-3, 1, [0, 0], 2],
+    [1, -2, [0, 0], 2],
+    [1, 1, [0, 0], 3],
+    [0, 0, [0, 1], 1],
+    [0, -1, [0, 1], 1],
+  ];
+  for (let i = 0; i < xylc.length; i++) {
+    let tmp = new Pairbot(idcounter++, xylc[i][0], xylc[i][1], "#ffffff", xylc[i][2], xylc[i][3]);
+    pairArray.push(tmp);
+    tmp.pairSetRTB();
+  }
+  doDrawFuncs();
+}

@@ -21,18 +21,11 @@ class Canvas {
     }
   }
 
-  drawPool() {
+  drawEx() {
     ctx.strokeStyle = "grey";
     ctx.fillStyle = "grey";
     ctx.beginPath();
-    ctx.arc(
-      // w / 2 +a * (x * Math.round(Math.sqrt(3)) + y),
-      a,
-      h / 2,
-      18,
-      0,
-      Math.PI * 2
-    );
+    ctx.arc(w / 2 + a * Math.round(Math.sqrt(3)) - a * 2, h / 2, 9, 0, Math.PI * 2);
     ctx.stroke();
     ctx.fill();
   }
@@ -121,11 +114,11 @@ class Canvas {
         ctx.beginPath();
         ctx.moveTo(
           w / 2 + a * (robAx * Math.round(Math.sqrt(3)) + robAy),
-          h / 2 - robAy * a * Math.sqrt(3) - pileA * 10
+          h / 2 - robAy * a * Math.sqrt(3) - pileA * 10,
         );
         ctx.lineTo(
           w / 2 + a * (robBx * Math.round(Math.sqrt(3)) + robBy),
-          h / 2 - robBy * a * Math.sqrt(3) - pileB * 10
+          h / 2 - robBy * a * Math.sqrt(3) - pileB * 10,
         );
         ctx.stroke();
         ctx.lineWidth = 9;
@@ -133,11 +126,11 @@ class Canvas {
         ctx.beginPath();
         ctx.moveTo(
           w / 2 + a * (robAx * Math.round(Math.sqrt(3)) + robAy),
-          h / 2 - robAy * a * Math.sqrt(3) - pileA * 10
+          h / 2 - robAy * a * Math.sqrt(3) - pileA * 10,
         );
         ctx.lineTo(
           w / 2 + a * (robBx * Math.round(Math.sqrt(3)) + robBy),
-          h / 2 - robBy * a * Math.sqrt(3) - pileB * 10
+          h / 2 - robBy * a * Math.sqrt(3) - pileB * 10,
         );
         ctx.stroke();
       }
@@ -161,7 +154,7 @@ class Canvas {
               h / 2 - y * a * Math.sqrt(3) - pile * 10,
               18,
               0,
-              Math.PI * 2
+              Math.PI * 2,
             );
             ctx.stroke();
             ctx.fill();
@@ -170,7 +163,7 @@ class Canvas {
               ctx.fillText(
                 this.RTB[i][j][k],
                 w / 2 + a * (x * Math.round(Math.sqrt(3)) + y),
-                h / 2 - y * a * Math.sqrt(3) - pile * 10
+                h / 2 - y * a * Math.sqrt(3) - pile * 10,
               );
             }
             pile++;
@@ -182,7 +175,7 @@ class Canvas {
             hexagon(
               w / 2 + a * (x * Math.round(Math.sqrt(3)) + y) - a / 2,
               h / 2 - y * a * Math.sqrt(3) - (a * Math.sqrt(3)) / 2,
-              a
+              a,
             );
           }
         }
